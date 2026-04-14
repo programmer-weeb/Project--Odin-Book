@@ -19,6 +19,16 @@ class FollowRequestsController < ApplicationController
   end
 
   def accept
+    unless @follow_request.requested_user == current_user
+      redirect_to follow_requests_path, alert: "Not authorized."
+      return
+    end
+
+    if @follow_request.update(follow_request_status: :accepted)
+      redirect_to received_follow_requests_path, notice: "Follow request accepted."
+    else
+      redirect_to received_follow_requests_path, alert: @follow_request.errors.full_messages.to_sentence
+    end
   end
 
   def reject
