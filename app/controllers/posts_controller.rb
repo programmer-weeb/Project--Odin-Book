@@ -44,4 +44,10 @@ class PostsController < ApplicationController
     redirect_to posts_path, notice: "Post deleted."
   end
 
+  private
+
+  def set_post
+    @post = Post.find(params[:id])
+  end
+
 end
