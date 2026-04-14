@@ -9,6 +9,13 @@ class FollowRequestsController < ApplicationController
   end
 
   def destroy
+    unless follow_request_participant?(@follow_request)
+      redirect_to follow_requests_path, alert: "Not authorized."
+      return
+    end
+
+    @follow_request.destroy
+    redirect_to follow_requests_path, notice: "Follow request removed."
   end
 
   def accept
