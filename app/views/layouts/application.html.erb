@@ -22,7 +22,30 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="<%= app_shell_classes %> font-sans antialiased">
+    <% if user_signed_in? %>
+      <header class="border-b border-[#e8e6dc] bg-[#f5f4ed]/95 backdrop-blur">
+        <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+          <div>
+            <%= link_to "Odin Book", root_path, class: "font-serif text-2xl font-medium tracking-normal text-[#141413]" %>
+            <p class="mt-1 text-sm text-[#5e5d59]">Quiet social space for posts, comments, and trusted circles.</p>
+          </div>
+
+          <nav class="flex flex-wrap items-center justify-end gap-1 text-sm text-[#5e5d59]">
+            <%= link_to "Feed", posts_path, class: subtle_button_classes %>
+            <%= link_to "People", users_path, class: subtle_button_classes %>
+            <%= link_to "Requests", follow_requests_path, class: subtle_button_classes %>
+            <%= link_to "Profile", user_path(current_user), class: subtle_button_classes %>
+            <%= link_to "Edit profile", edit_profile_path, class: subtle_button_classes %>
+            <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: primary_button_classes %>
+          </nav>
+        </div>
+      </header>
+    <% end %>
+
+    <main class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+      <%= render "shared/flash" %>
+      <%= yield %>
+    </main>
   </body>
 </html>
