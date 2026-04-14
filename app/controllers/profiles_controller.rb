@@ -15,4 +15,10 @@ class ProfilesController < ApplicationController
     end
   end
 
+  private
+
+  def profile_params
+    params.require(:profile).permit(:display_name, :bio)
+  end
+
 end
