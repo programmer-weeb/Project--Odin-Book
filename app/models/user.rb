@@ -8,4 +8,8 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
+
+  has_many :sent_follow_requests, class_name: "UserFollowRequest", foreign_key: "requesting_user_id", dependent: :destroy
+  has_many :received_follow_requests, class_name: "UserFollowRequest", foreign_key: "requested_user_id", dependent: :destroy
 end
+
