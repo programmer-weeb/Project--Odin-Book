@@ -31,7 +31,7 @@ class User < ApplicationRecord
     request&.follow_request_status || "none"
   end
 
-  after_create :create_default_profile
+  after_commit :create_default_profile, on: create
 
   private
 
