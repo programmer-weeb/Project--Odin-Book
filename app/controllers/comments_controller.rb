@@ -26,4 +26,10 @@ class CommentsController < ApplicationController
     redirect_to post_path(post), notice: "Comment deleted."
   end
 
+  private
+
+  def set_post
+    @post = Post.find(params[:post_id])
+  end
+
 end
