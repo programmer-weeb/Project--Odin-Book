@@ -1,2 +1,61 @@
-<h1>Posts#show</h1>
-<p>Find me in app/views/posts/show.html.erb</p>
+<div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
+  <section class="space-y-6">
+    <%= render "post_card", post: @post, likes_by_post_id: @likes_by_post_id %>
+
+    <div class="<%= [card_classes, 'p-6'].join(' ') %>">
+      <div class="flex items-end justify-between gap-4">
+        <div>
+          <p class="text-sm uppercase tracking-[0.08em] text-[#87867f]">Discussion</p>
+          <h2 class="mt-2 text-3xl leading-tight text-[#141413]">Comments</h2>
+        </div>
+        <p class="text-sm text-[#87867f]"><%= pluralize(@comments.size, "reply") %></p>
+      </div>
+
+      <div class="mt-6">
+        <%= form_with model: [@post, @comment], class: "space-y-4" do |form| %>
+          <%= render "shared/errors", object: @comment %>
+          <div>
+            <%= form.label :content, "Add comment", class: "text-sm font-medium text-[#3d3d3a]" %>
+            <%= form.text_area :content, rows: 4, class: textarea_classes, placeholder: "Respond with context, agreement, or a useful question." %>
+          </div>
+          <%= form.submit "Post comment", class: primary_button_classes %>
+        <% end %>
+      </div>
+
+      <div class="mt-8 space-y-4">
+        <% if @comments.any? %>
+          <% @comments.each do |comment| %>
+            <article class="rounded-lg border border-[#ece9df] bg-white px-4 py-4">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="font-medium text-[#141413]"><%= display_name(comment.user) %></p>
+                  <p class="mt-1 text-sm text-[#87867f]"><%= friendly_timestamp(comment.created_at) %></p>
+                </div>
+
+                <% if comment.user == current_user || @post.user == current_user %>
+                  <%= button_to "Delete", comment_path(comment), method: :delete, class: secondary_button_classes, form: { data: { turbo_confirm: "Delete this comment?" } } %>
+                <% end %>
+              </div>
+
+              <p class="mt-3 whitespace-pre-wrap text-[15px] leading-7 text-[#3d3d3a]"><%= comment.content %></p>
+            </article>
+          <% end %>
+        <% else %>
+          <%= render "shared/empty_state", title: "No comments yet", body: "Be first reply and set tone for thread." %>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <aside class="space-y-4">
+    <div class="<%= [card_classes, 'p-6'].join(' ') %>">
+      <p class="text-sm uppercase tracking-[0.08em] text-[#87867f]">Author</p>
+      <h2 class="mt-2 text-3xl leading-tight text-[#141413]"><%= display_name(@post.user) %></h2>
+      <p class="mt-2 text-sm text-[#5e5d59]"><%= @post.user.profile&.bio.presence || "No bio yet." %></p>
+      <div class="mt-5 flex flex-wrap gap-3">
+        <%= link_to "View profile", user_path(@post.user), class: primary_button_classes %>
+        <%= link_to "Friends", friends_user_path(@post.user), class: secondary_button_classes %>
+      </div>
+    </div>
+  </aside>
+</div>
