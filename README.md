@@ -2,6 +2,8 @@
 
 Odin Book is a small social network built with Ruby on Rails. Users can sign up, create posts, comment, like posts, manage a profile, and send follow requests to other users.
 
+[**Live Demo**](https://uropygial-overofficious-lovella.ngrok-free.dev/)
+
 ## Features
 
 - User authentication with Devise
