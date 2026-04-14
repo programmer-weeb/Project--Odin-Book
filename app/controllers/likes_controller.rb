@@ -14,6 +14,14 @@ class LikesController < ApplicationController
   end
 
   def destroy
+    unless @like.user == current_user
+      redirect_to post_path(@like.post), alert: "Not authorized."
+      return
+    end
+
+    post = @like.post
+    @like.destroy
+    redirect_to post_path(post), notice: "Like removed."
   end
 
 end
