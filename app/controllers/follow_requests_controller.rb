@@ -53,6 +53,13 @@ class FollowRequestsController < ApplicationController
   end
 
   def create
+    @follow_request = current_user.sent_follow_requests.build(requested_user: @requested_user)
+
+    if @follow_request.save
+      redirect_to user_path(@requested_user), notice: "Follow request sent."
+    else
+      redirect_to user_path(@requested_user), alert: @follow_request.errors.full_messages.to_sentence
+    end
   end
 
 end
