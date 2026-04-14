@@ -13,7 +13,23 @@ class User < ApplicationRecord
   has_many :received_follow_requests, class_name: "UserFollowRequest", foreign_key: "requested_user_id", dependent: :destroy
 
   has_many :accepted_sent_requests, -> { accepted }, class_name: "UserFollowRequest", foreign_key: "requesting_user_id"
-  has_many :friends, through: :accepted_sent_requests, source: :requested_user
+  has_many :accepted_received_requests, -> { accepted }, class_name: "UserFollowRequest", foreign_key: "requested_user_id"
+
+  def friends
+    User.where(id: accepted_sent_requests.select(:requested_user_id))
+        .or(User.where(id: accepted_received_requests.select(:requesting_user_id)))
+  end
+
+  def friend?(user)
+    friends.exists?(user.id)
+  end
+
+  def friendship_status(user)
+    request = UserFollowRequest.where(requesting_user: self, requested_user: user)
+                               .or(UserFollowRequest.where(requesting_user: user, requested_user: self))
+                               .first
+    request&.follow_request_status || "none"
+  end
 
   after_create :create_default_profile
 
