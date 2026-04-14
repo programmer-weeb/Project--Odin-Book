@@ -56,4 +56,8 @@ class PostsController < ApplicationController
     redirect_to post_path(@post), alert: "Not authorized."
   end
 
+  def post_params
+    params.require(:post).permit(:content)
+  end
+
 end
