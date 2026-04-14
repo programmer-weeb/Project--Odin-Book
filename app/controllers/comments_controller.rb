@@ -15,6 +15,15 @@ class CommentsController < ApplicationController
   end
 
   def destroy
+    post = @comment.post
+
+    unless @comment.user == current_user || post.user == current_user
+      redirect_to post_path(post), alert: "Not authorized."
+      return
+    end
+
+    @comment.destroy
+    redirect_to post_path(post), notice: "Comment deleted."
   end
 
 end
