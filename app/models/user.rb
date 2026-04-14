@@ -11,5 +11,16 @@ class User < ApplicationRecord
 
   has_many :sent_follow_requests, class_name: "UserFollowRequest", foreign_key: "requesting_user_id", dependent: :destroy
   has_many :received_follow_requests, class_name: "UserFollowRequest", foreign_key: "requested_user_id", dependent: :destroy
+
+  has_many :accepted_sent_requests, -> { accepted }, class_name: "UserFollowRequest", foreign_key: "requesting_user_id"
+  has_many :friends, through: :accepted_sent_requests, source: :requested_user
+
+  after_create :create_default_profile
+
+  private
+
+  def create_default_profile
+    create_profile(display_name: email.split('@').first)
+  end
 end
 
