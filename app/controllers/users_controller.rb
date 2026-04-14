@@ -13,6 +13,7 @@ class UsersController < ApplicationController
   end
 
   def friends
+    @friends = @user.friends.includes(:profile).order(:email)
   end
 
 end
