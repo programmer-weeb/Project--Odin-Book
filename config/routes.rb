@@ -17,14 +17,19 @@ Rails.application.routes.draw do
   end
 
   # Management of my own interactions
-  resources :follow_requests, only: [ :index, :update, :destroy ] do
-    # You could add specific collection routes if you want to split the view
-    get "received", on: :collection
-    get "sent", on: :collection
+  resources :follow_requests, only: [:index, :destroy] do
+    member do
+      patch :accept
+      patch :reject
+    end
+    collection do
+      get :received
+      get :sent
+    end
   end
 
   # Current User's Profile
-  resource :profile, hide: :show, only: [ :edit, :update ]
+  resource :profile, only: [ :edit, :update ]
 
   get "up" => "rails/health#show", as: :rails_health_check
 end
