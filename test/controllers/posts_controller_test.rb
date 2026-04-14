@@ -1,38 +1,70 @@
 require "test_helper"
 
 class PostsControllerTest < ActionDispatch::IntegrationTest
-  test "should get index" do
-    get posts_index_url
+  setup do
+    @user = users(:one)
+    @post = posts(:one)
+  end
+
+  test "redirects index when not signed in" do
+    get posts_url
+    assert_redirected_to new_user_session_url
+  end
+
+  test "should get index when signed in" do
+    sign_in @user
+
+    get posts_url
     assert_response :success
   end
 
   test "should get show" do
-    get posts_show_url
+    sign_in @user
+
+    get post_url(@post)
     assert_response :success
   end
 
   test "should get new" do
-    get posts_new_url
+    sign_in @user
+
+    get new_post_url
     assert_response :success
   end
 
-  test "should get create" do
-    get posts_create_url
-    assert_response :success
+  test "should create post" do
+    sign_in @user
+
+    assert_difference("Post.count", 1) do
+      post posts_url, params: { post: { content: "New post content" } }
+    end
+
+    assert_redirected_to post_url(Post.order(:id).last)
   end
 
   test "should get edit" do
-    get posts_edit_url
+    sign_in @user
+
+    get edit_post_url(@post)
     assert_response :success
   end
 
-  test "should get update" do
-    get posts_update_url
-    assert_response :success
+  test "should update post" do
+    sign_in @user
+
+    patch post_url(@post), params: { post: { content: "Updated content" } }
+
+    assert_redirected_to post_url(@post)
+    assert_equal "Updated content", @post.reload.content
   end
 
-  test "should get destroy" do
-    get posts_destroy_url
-    assert_response :success
+  test "should destroy post" do
+    sign_in @user
+
+    assert_difference("Post.count", -1) do
+      delete post_url(@post)
+    end
+
+    assert_redirected_to posts_url
   end
 end

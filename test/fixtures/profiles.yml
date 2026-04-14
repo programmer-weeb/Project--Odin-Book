@@ -1,11 +1,14 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
   user: one
-  display_name: MyString
-  bio: MyText
+  display_name: one
+  bio: One bio
 
 two:
   user: two
-  display_name: MyString
-  bio: MyText
+  display_name: two
+  bio: Two bio
+
+three:
+  user: three
+  display_name: three
+  bio: Three bio

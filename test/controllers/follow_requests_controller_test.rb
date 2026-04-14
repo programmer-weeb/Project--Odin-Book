@@ -1,38 +1,69 @@
 require "test_helper"
 
 class FollowRequestsControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    @user = users(:one)
+    @requested_user = users(:three)
+    @received_request = user_follow_requests(:two)
+    @sent_request = user_follow_requests(:one)
+  end
+
   test "should get index" do
-    get follow_requests_index_url
+    sign_in @user
+
+    get follow_requests_url
     assert_response :success
   end
 
-  test "should get destroy" do
-    get follow_requests_destroy_url
-    assert_response :success
+  test "should destroy sent follow request" do
+    sign_in @user
+
+    assert_difference("UserFollowRequest.count", -1) do
+      delete follow_request_url(@sent_request)
+    end
+
+    assert_redirected_to follow_requests_url
   end
 
-  test "should get accept" do
-    get follow_requests_accept_url
-    assert_response :success
+  test "requested user should accept follow request" do
+    sign_in users(:three)
+
+    patch accept_follow_request_url(@received_request)
+
+    assert_redirected_to received_follow_requests_url
+    assert_equal "accepted", @received_request.reload.follow_request_status
   end
 
-  test "should get reject" do
-    get follow_requests_reject_url
-    assert_response :success
+  test "requested user should reject follow request" do
+    sign_in users(:three)
+
+    patch reject_follow_request_url(@received_request)
+
+    assert_redirected_to received_follow_requests_url
+    assert_equal "rejected", @received_request.reload.follow_request_status
   end
 
   test "should get received" do
-    get follow_requests_received_url
+    sign_in users(:three)
+
+    get received_follow_requests_url
     assert_response :success
   end
 
   test "should get sent" do
-    get follow_requests_sent_url
+    sign_in @user
+
+    get sent_follow_requests_url
     assert_response :success
   end
 
-  test "should get create" do
-    get follow_requests_create_url
-    assert_response :success
+  test "should create follow request" do
+    sign_in users(:two)
+
+    assert_difference("UserFollowRequest.count", 1) do
+      post user_follow_requests_url(@requested_user)
+    end
+
+    assert_redirected_to user_url(@requested_user)
   end
 end

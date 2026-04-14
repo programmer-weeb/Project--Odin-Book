@@ -1,11 +1,9 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
   requesting_user: one
-  requested_user: one
+  requested_user: two
   follow_request_status: 1
 
 two:
-  requesting_user: two
-  requested_user: two
-  follow_request_status: 1
+  requesting_user: one
+  requested_user: three
+  follow_request_status: 0
