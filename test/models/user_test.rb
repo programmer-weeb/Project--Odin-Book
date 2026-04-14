@@ -42,4 +42,20 @@ class UserTest < ActiveSupport::TestCase
     assert_equal "google-456", user.uid
     assert_equal "New Google User", user.profile.display_name
   end
+
+  test ".from_google_oauth rejects unverified email" do
+    auth = OmniAuth::AuthHash.new(
+      provider: "google_oauth2",
+      uid: "google-789",
+      info: {
+        email: "unverified@example.com",
+        email_verified: false,
+        name: "Unverified User"
+      }
+    )
+
+    error = assert_raises(ArgumentError) { User.from_google_oauth(auth) }
+
+    assert_equal "Google account must provide verified email", error.message
+  end
 end
