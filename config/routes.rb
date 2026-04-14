@@ -1,31 +1,30 @@
 Rails.application.routes.draw do
   devise_for :users
-
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
   root "posts#index"
 
-  resources :posts do
-    resources :comments, only: [:create, :destroy]
-    resources :likes, only: [:create, :destroy]
+  # Shallow nesting keeps URLs like /comments/1 instead of /posts/1/comments/1
+  resources :posts, shallow: true do
+    resources :comments, only: [ :create, :destroy ]
+    resources :likes, only: [ :create, :destroy ]
   end
 
-  resources :users, only: [:index, :show] do
-    resources :follow_requests, only: [:create]
+  resources :users, only: [ :index, :show ] do
+    # Nested for the context of "who" I am following
+    resources :follow_requests, only: [ :create ]
+
+    # Optional: see a specific user's friends
+    get "friends", on: :member
   end
 
-  # Dedicated routes for managing incoming/outgoing requests
-  resources :follow_requests, only: [:index, :update, :destroy]
+  # Management of my own interactions
+  resources :follow_requests, only: [ :index, :update, :destroy ] do
+    # You could add specific collection routes if you want to split the view
+    get "received", on: :collection
+    get "sent", on: :collection
+  end
 
-  # Singular profile resource for the current user
-  resource :profile, only: [:edit, :update]
+  # Current User's Profile
+  resource :profile, hide: :show, only: [ :edit, :update ]
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 end
-
