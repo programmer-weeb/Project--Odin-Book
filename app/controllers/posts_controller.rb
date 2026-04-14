@@ -18,6 +18,14 @@ class PostsController < ApplicationController
   end
 
   def create
+    @post = current_user.posts.build(post_params)
+
+    if @post.save
+      redirect_to post_path(@post), notice: "Post created."
+    else
+      @posts = Post.includes(:user, :comments, :likes).order(created_at: :desc)
+      render :index, status: :unprocessable_entity
+    end
   end
 
   def edit
