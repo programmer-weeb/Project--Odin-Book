@@ -1,4 +1,8 @@
 module ApplicationHelper
+  def google_oauth_enabled?
+    google_client_id.present? && google_client_secret.present?
+  end
+
   def display_name(user)
     user.profile&.display_name.presence || user.email.split("@").first
   end
@@ -61,5 +65,15 @@ module ApplicationHelper
     else
       "bg-[#ece9df] text-[#5e5d59]"
     end
+  end
+
+  private
+
+  def google_client_id
+    Rails.application.credentials.dig(:google, :client_id) || ENV["GOOGLE_CLIENT_ID"]
+  end
+
+  def google_client_secret
+    Rails.application.credentials.dig(:google, :client_secret) || ENV["GOOGLE_CLIENT_SECRET"]
   end
 end
