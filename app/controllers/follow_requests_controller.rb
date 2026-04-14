@@ -49,6 +49,7 @@ class FollowRequestsController < ApplicationController
   end
 
   def sent
+    @follow_requests = current_user.sent_follow_requests.includes(:requested_user)
   end
 
   def create
