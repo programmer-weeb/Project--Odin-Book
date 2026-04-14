@@ -7,6 +7,9 @@ class UsersController < ApplicationController
   end
 
   def show
+    @profile = @user.profile
+    @posts = @user.posts.includes(:comments, :likes).order(created_at: :desc)
+    @friendship_status = current_user.friendship_status(@user)
   end
 
   def friends
