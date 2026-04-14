@@ -31,7 +31,7 @@ class User < ApplicationRecord
     request&.follow_request_status || "none"
   end
 
-  after_commit :create_default_profile, on: create
+  after_commit :create_default_profile, on: :create
 
   private
 
@@ -39,4 +39,3 @@ class User < ApplicationRecord
     create_profile(display_name: email.split('@').first)
   end
 end
-
