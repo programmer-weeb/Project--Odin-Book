@@ -1,0 +1,15 @@
+<%= form_with model: post, class: "space-y-4" do |form| %>
+  <%= render "shared/errors", object: post %>
+
+  <div>
+    <%= form.label :content, "What do you want to share?", class: "text-sm font-medium text-[#3d3d3a]" %>
+    <%= form.text_area :content, rows: local_assigns.fetch(:rows, 6), class: textarea_classes, placeholder: "Write a thoughtful update, reflection, or question." %>
+  </div>
+
+  <div class="flex flex-wrap items-center gap-3">
+    <%= form.submit submit_label, class: primary_button_classes %>
+    <% unless post.new_record? %>
+      <%= link_to "Cancel", post_path(post), class: secondary_button_classes %>
+    <% end %>
+  </div>
+<% end %>
