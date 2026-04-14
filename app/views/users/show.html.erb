@@ -1,2 +1,51 @@
-<h1>Users#show</h1>
-<p>Find me in app/views/users/show.html.erb</p>
+<div class="grid gap-8 lg:grid-cols-[22rem_minmax(0,1fr)]">
+  <aside class="space-y-4">
+    <div class="<%= [card_classes, 'p-6'].join(' ') %>">
+      <p class="text-sm uppercase tracking-[0.08em] text-[#87867f]">Profile</p>
+      <h1 class="mt-2 text-4xl leading-tight text-[#141413]"><%= display_name(@user) %></h1>
+      <p class="mt-2 text-sm text-[#87867f]"><%= @user.email %></p>
+
+      <% if @friendship_status != "none" %>
+        <div class="mt-4">
+          <span class="rounded-full px-3 py-1 text-xs font-medium <%= status_badge_classes(@friendship_status) %>"><%= @friendship_status.humanize %></span>
+        </div>
+      <% end %>
+
+      <p class="mt-5 text-[15px] leading-7 text-[#5e5d59]"><%= @profile&.bio.presence || "No bio yet." %></p>
+
+      <div class="mt-6 flex flex-wrap gap-3">
+        <%= link_to "Friends", friends_user_path(@user), class: secondary_button_classes %>
+
+        <% if @user == current_user %>
+          <%= link_to "Edit profile", edit_profile_path, class: primary_button_classes %>
+        <% elsif @friendship_status == "none" %>
+          <%= button_to "Send request", user_follow_requests_path(@user), method: :post, class: primary_button_classes %>
+        <% elsif @pending_sent_request %>
+          <%= button_to "Cancel request", follow_request_path(@pending_sent_request), method: :delete, class: secondary_button_classes %>
+        <% elsif @pending_received_request %>
+          <%= link_to "Review request", received_follow_requests_path, class: primary_button_classes %>
+        <% end %>
+      </div>
+    </div>
+  </aside>
+
+  <section class="space-y-5">
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <p class="text-sm uppercase tracking-[0.08em] text-[#87867f]">Posts</p>
+        <h2 class="mt-2 text-3xl leading-tight text-[#141413]"><%= @user == current_user ? "Your posts" : "#{display_name(@user)}'s posts" %></h2>
+      </div>
+      <% if @user == current_user %>
+        <%= link_to "New post", new_post_path, class: primary_button_classes %>
+      <% end %>
+    </div>
+
+    <% if @posts.any? %>
+      <% @posts.each do |post| %>
+        <%= render "posts/post_card", post: post, likes_by_post_id: @likes_by_post_id %>
+      <% end %>
+    <% else %>
+      <%= render "shared/empty_state", title: "No posts yet", body: "This profile has not published anything yet." %>
+    <% end %>
+  </section>
+</div>
