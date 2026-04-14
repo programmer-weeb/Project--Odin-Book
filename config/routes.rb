@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
   root "posts#index"
 
   # Shallow nesting keeps URLs like /comments/1 instead of /posts/1/comments/1
