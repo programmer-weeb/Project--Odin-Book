@@ -20,4 +20,17 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to user_url(@user)
     assert_equal "Updated Name", @user.profile.reload.display_name
   end
+
+  test "should attach profile photo" do
+    sign_in @user
+
+    patch profile_url, params: {
+      profile: {
+        photo: Rack::Test::UploadedFile.new(Rails.root.join("public/icon.png"), "image/png")
+      }
+    }
+
+    assert_redirected_to user_url(@user)
+    assert @user.profile.reload.photo.attached?
+  end
 end

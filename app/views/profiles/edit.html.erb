@@ -7,6 +7,13 @@
     <%= form_with model: @profile, url: profile_path, class: "mt-6 space-y-5" do |form| %>
       <%= render "shared/errors", object: @profile %>
 
+      <% if @profile.photo.attached? %>
+        <div>
+          <p class="text-sm font-medium text-[#3d3d3a]">Current photo</p>
+          <%= image_tag @profile.photo, alt: "#{@profile.display_name} profile photo", class: "mt-2 h-32 w-32 rounded-lg object-cover" %>
+        </div>
+      <% end %>
+
       <div>
         <%= form.label :display_name, class: "text-sm font-medium text-[#3d3d3a]" %>
         <%= form.text_field :display_name, class: input_classes, placeholder: "How people should know you" %>
@@ -15,6 +22,14 @@
       <div>
         <%= form.label :bio, class: "text-sm font-medium text-[#3d3d3a]" %>
         <%= form.text_area :bio, rows: 6, class: textarea_classes, placeholder: "Short introduction, interests, and what you like discussing." %>
+      </div>
+
+      <div>
+        <%= form.label :photo, "Profile photo", class: "text-sm font-medium text-[#3d3d3a]" %>
+        <%= form.file_field :photo,
+            accept: "image/png,image/jpeg,image/jpg,image/webp",
+            class: "#{input_classes} file:mr-4 file:rounded file:border-0 file:bg-[#ece9df] file:px-3 file:py-2" %>
+        <p class="mt-2 text-sm text-[#5e5d59]">PNG, JPG, or WEBP up to 5MB.</p>
       </div>
 
       <div class="flex flex-wrap gap-3">

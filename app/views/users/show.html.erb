@@ -1,6 +1,12 @@
 <div class="grid gap-8 lg:grid-cols-[22rem_minmax(0,1fr)]">
   <aside class="space-y-4">
     <div class="<%= [card_classes, 'p-6'].join(' ') %>">
+      <% if @profile&.photo&.attached? %>
+        <%= image_tag @profile.photo, alt: "#{display_name(@user)} profile photo", class: "h-40 w-full rounded-lg object-cover" %>
+      <% else %>
+        <div class="h-40 w-full rounded-lg bg-[#ece9df]"></div>
+      <% end %>
+
       <p class="text-sm uppercase tracking-[0.08em] text-[#87867f]">Profile</p>
       <h1 class="mt-2 text-4xl leading-tight text-[#141413]"><%= display_name(@user) %></h1>
       <p class="mt-2 text-sm text-[#87867f]"><%= @user.email %></p>
