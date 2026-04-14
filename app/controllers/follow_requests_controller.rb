@@ -62,4 +62,10 @@ class FollowRequestsController < ApplicationController
     end
   end
 
+  private
+
+  def set_follow_request
+    @follow_request = UserFollowRequest.find(params[:id])
+  end
+
 end
