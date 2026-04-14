@@ -1,0 +1,20 @@
+<article class="rounded-lg border border-[#ece9df] bg-white px-5 py-4">
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <p class="font-medium text-[#141413]"><%= display_name(other_user) %></p>
+      <p class="mt-1 text-sm text-[#87867f]"><%= other_user.email %></p>
+      <p class="mt-2 text-sm text-[#5e5d59]">Updated <%= friendly_timestamp(follow_request.updated_at) %></p>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-3">
+      <span class="rounded-full px-3 py-1 text-xs font-medium <%= status_badge_classes(follow_request.follow_request_status) %>"><%= follow_request.follow_request_status.humanize %></span>
+
+      <% if local_assigns[:received_actions] && follow_request.pending? %>
+        <%= button_to "Accept", accept_follow_request_path(follow_request), method: :patch, class: primary_button_classes %>
+        <%= button_to "Reject", reject_follow_request_path(follow_request), method: :patch, class: secondary_button_classes %>
+      <% end %>
+
+      <%= button_to "Remove", follow_request_path(follow_request), method: :delete, class: secondary_button_classes, form: { data: { turbo_confirm: "Remove this follow request?" } } %>
+    </div>
+  </div>
+</article>
