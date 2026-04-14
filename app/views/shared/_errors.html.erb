@@ -1,0 +1,10 @@
+<% if object.errors.any? %>
+  <div class="mb-4 rounded-lg border border-[#e4c7c1] bg-[#fff7f5] px-4 py-3 text-sm text-[#8f2f2f]">
+    <p class="font-medium"><%= pluralize(object.errors.count, "error") %> blocked this form.</p>
+    <ul class="mt-2 space-y-1">
+      <% object.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
