@@ -32,3 +32,8 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# JetBrains IDEs
+.idea/
+*.iml
+.idea/workspace.xml
