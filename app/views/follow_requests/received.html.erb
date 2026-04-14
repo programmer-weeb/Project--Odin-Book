@@ -1,2 +1,19 @@
-<h1>FollowRequests#received</h1>
-<p>Find me in app/views/follow_requests/received.html.erb</p>
+<section class="space-y-6">
+  <div class="flex items-end justify-between gap-4">
+    <div>
+      <p class="text-sm uppercase tracking-[0.08em] text-[#87867f]">Requests</p>
+      <h1 class="mt-2 text-4xl leading-tight text-[#141413]">Received follow requests.</h1>
+    </div>
+    <%= link_to "All requests", follow_requests_path, class: secondary_button_classes %>
+  </div>
+
+  <div class="space-y-4">
+    <% if @follow_requests.any? %>
+      <% @follow_requests.each do |follow_request| %>
+        <%= render "follow_request", follow_request: follow_request, other_user: follow_request.requesting_user, received_actions: true %>
+      <% end %>
+    <% else %>
+      <%= render "shared/empty_state", title: "No received requests", body: "Once someone follows you, their request lands here." %>
+    <% end %>
+  </div>
+</section>
