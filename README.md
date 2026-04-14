@@ -110,7 +110,6 @@ bin/rails test
 
 - Development database name: `project_odin_book_development`
 - Test database name: `project_odin_book_test`
-- `db/seeds.rb` is still placeholder and does not load sample social data
 
 ## Project Goal
 
