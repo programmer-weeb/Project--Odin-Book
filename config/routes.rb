@@ -1,27 +1,5 @@
 Rails.application.routes.draw do
-  get "profiles/edit"
-  get "profiles/update"
-  get "follow_requests/index"
-  get "follow_requests/destroy"
-  get "follow_requests/accept"
-  get "follow_requests/reject"
-  get "follow_requests/received"
-  get "follow_requests/sent"
-  get "follow_requests/create"
-  get "users/index"
-  get "users/show"
-  get "users/friends"
-  get "likes/create"
-  get "likes/destroy"
-  get "comments/create"
-  get "comments/destroy"
-  get "posts/index"
-  get "posts/show"
-  get "posts/new"
-  get "posts/create"
-  get "posts/edit"
-  get "posts/update"
-  get "posts/destroy"
+
   devise_for :users
   root "posts#index"
 
