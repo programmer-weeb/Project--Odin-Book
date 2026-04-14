@@ -24,4 +24,10 @@ class LikesController < ApplicationController
     redirect_to post_path(post), notice: "Like removed."
   end
 
+  private
+
+  def set_post
+    @post = Post.find(params[:post_id])
+  end
+
 end
