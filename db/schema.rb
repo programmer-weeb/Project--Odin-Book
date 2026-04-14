@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_14_102449) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_14_105122) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -30,6 +30,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_14_102449) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_likes_on_post_id"
+    t.index ["user_id", "post_id"], name: "index_likes_on_user_id_and_post_id", unique: true
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
@@ -38,12 +39,14 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_14_102449) do
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "likes_count", default: 0, null: false
+    t.integer "comments_count", default: 0, null: false
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
   create_table "profiles", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "display_name"
+    t.string "display_name", null: false
     t.text "bio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -53,10 +56,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_14_102449) do
   create_table "user_follow_requests", force: :cascade do |t|
     t.bigint "requesting_user_id", null: false
     t.bigint "requested_user_id", null: false
-    t.integer "follow_request_status"
+    t.integer "follow_request_status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["requested_user_id"], name: "index_user_follow_requests_on_requested_user_id"
+    t.index ["requesting_user_id", "requested_user_id"], name: "index_unique_follow_requests", unique: true
     t.index ["requesting_user_id"], name: "index_user_follow_requests_on_requesting_user_id"
   end
 
