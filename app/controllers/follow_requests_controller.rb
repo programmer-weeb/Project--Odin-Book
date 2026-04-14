@@ -68,4 +68,8 @@ class FollowRequestsController < ApplicationController
     @follow_request = UserFollowRequest.find(params[:id])
   end
 
+  def set_requested_user
+    @requested_user = User.find(params[:user_id])
+  end
+
 end
