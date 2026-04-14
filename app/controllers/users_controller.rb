@@ -16,4 +16,10 @@ class UsersController < ApplicationController
     @friends = @user.friends.includes(:profile).order(:email)
   end
 
+  private
+
+  def set_user
+    @user = User.includes(:profile).find(params[:id])
+  end
+
 end
