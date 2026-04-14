@@ -50,4 +50,10 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
   end
 
+  def authorize_post_owner!
+    return if @post.user == current_user
+
+    redirect_to post_path(@post), alert: "Not authorized."
+  end
+
 end
