@@ -72,4 +72,8 @@ class FollowRequestsController < ApplicationController
     @requested_user = User.find(params[:user_id])
   end
 
+  def follow_request_participant?(follow_request)
+    [follow_request.requesting_user_id, follow_request.requested_user_id].include?(current_user.id)
+  end
+
 end
