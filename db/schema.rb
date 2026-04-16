@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_16_054200) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_16_060523) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -49,7 +49,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_16_054200) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["post_id", "created_at"], name: "index_comments_on_post_id_and_created_at"
-    t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
@@ -59,9 +58,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_16_054200) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["post_id", "created_at"], name: "index_likes_on_post_id_and_created_at"
-    t.index ["post_id"], name: "index_likes_on_post_id"
     t.index ["user_id", "post_id"], name: "index_likes_on_user_id_and_post_id", unique: true
-    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -72,7 +69,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_16_054200) do
     t.integer "likes_count", default: 0, null: false
     t.integer "comments_count", default: 0, null: false
     t.index ["user_id", "created_at"], name: "index_posts_on_user_id_and_created_at"
-    t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -91,10 +87,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_16_054200) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["requested_user_id", "follow_request_status"], name: "idx_follow_req_on_requested_and_status"
-    t.index ["requested_user_id"], name: "index_user_follow_requests_on_requested_user_id"
     t.index ["requesting_user_id", "follow_request_status"], name: "idx_follow_req_on_requesting_and_status"
     t.index ["requesting_user_id", "requested_user_id"], name: "index_unique_follow_requests", unique: true
-    t.index ["requesting_user_id"], name: "index_user_follow_requests_on_requesting_user_id"
   end
 
   create_table "users", force: :cascade do |t|
