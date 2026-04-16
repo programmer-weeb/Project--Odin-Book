@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
   root "posts#index"
 
@@ -18,7 +17,7 @@ Rails.application.routes.draw do
   end
 
   # Management of my own interactions
-  resources :follow_requests, only: [:index, :destroy] do
+  resources :follow_requests, only: [ :index, :destroy ] do
     member do
       patch :accept
       patch :reject
