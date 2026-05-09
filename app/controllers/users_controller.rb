@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :friends]
 
   def index
-    @users = User.includes(:profile).order(:email)
+    @pagy, @users = pagy(User.includes(:profile).order(:email))
     @friend_ids = current_user.friends.pluck(:id)
     @sent_request_user_ids = current_user.sent_follow_requests.pending.pluck(:requested_user_id)
     @received_request_user_ids = current_user.received_follow_requests.pending.pluck(:requesting_user_id)
@@ -11,7 +11,7 @@ class UsersController < ApplicationController
 
   def show
     @profile = @user.profile
-    @posts = @user.posts.order(created_at: :desc)
+    @pagy_posts, @posts = pagy(@user.posts.order(created_at: :desc))
     @likes_by_post_id = current_user.likes.where(post_id: @posts.map(&:id)).index_by(&:post_id)
     @friendship_status = current_user.friendship_status(@user)
     @pending_sent_request = current_user.sent_follow_requests.pending.find_by(requested_user: @user)
@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   end
 
   def friends
-    @friends = @user.friends.includes(:profile).order(:email)
+    @pagy, @friends = pagy_array(@user.friends.includes(:profile).order(:email).to_a)
   end
 
   private

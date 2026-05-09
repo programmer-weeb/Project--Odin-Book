@@ -98,4 +98,11 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to post_url(@other_post)
     assert_equal "Not authorized.", flash[:alert]
   end
+
+  test "index page=2 returns success" do
+    sign_in @user
+
+    get posts_url, params: { page: 2 }
+    assert_response :success
+  end
 end

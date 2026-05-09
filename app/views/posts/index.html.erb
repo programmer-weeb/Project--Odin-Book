@@ -20,6 +20,7 @@
       <% @posts.each do |post| %>
         <%= render "post_card", post: post, likes_by_post_id: @likes_by_post_id %>
       <% end %>
+      <%= raw pagy_nav(@pagy) %>
     <% else %>
       <%= render "shared/empty_state", title: "No posts yet", body: "Start conversation with first post. Feed will fill as people publish updates and respond." %>
     <% end %>

@@ -5,14 +5,14 @@ class PostsController < ApplicationController
 
   def index
     @post = current_user.posts.build
-    @posts = Post.includes(user: :profile).order(created_at: :desc)
+    @pagy, @posts = pagy(Post.includes(user: :profile).order(created_at: :desc))
     @likes_by_post_id = current_user.likes.where(post_id: @posts.map(&:id)).index_by(&:post_id)
   end
 
   def show
     @post = Post.includes(user: :profile).find(params[:id])
     @comment = @post.comments.build
-    @comments = @post.comments.includes(user: :profile).order(created_at: :asc)
+    @pagy_comments, @comments = pagy(@post.comments.includes(user: :profile).order(created_at: :asc))
     @likes_by_post_id = current_user.likes.where(post_id: @post.id).index_by(&:post_id)
   end
 
@@ -26,7 +26,7 @@ class PostsController < ApplicationController
     if @post.save
       redirect_to post_path(@post), notice: "Post created."
     else
-      @posts = Post.includes(user: :profile).order(created_at: :desc)
+      @pagy, @posts = pagy(Post.includes(user: :profile).order(created_at: :desc))
       @likes_by_post_id = current_user.likes.where(post_id: @posts.map(&:id)).index_by(&:post_id)
       render :index, status: :unprocessable_entity
     end
