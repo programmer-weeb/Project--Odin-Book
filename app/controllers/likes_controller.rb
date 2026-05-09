@@ -1,4 +1,6 @@
 class LikesController < ApplicationController
+  include AuthorizeOwner
+
   before_action :authenticate_user!
   before_action :set_post, only: :create
   before_action :set_like, only: :destroy
@@ -14,10 +16,8 @@ class LikesController < ApplicationController
   end
 
   def destroy
-    unless @like.user == current_user
-      redirect_to post_path(@like.post), alert: "Not authorized."
-      return
-    end
+    authorize_owner!(@like, redirect_path: post_path(@like.post))
+    return if performed?
 
     post = @like.post
     @like.destroy
