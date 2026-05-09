@@ -19,5 +19,5 @@ Rack::Attack.throttle("follow_requests/ip", limit: 10, period: 60) do |req|
 end
 
 Rack::Attack.throttled_responder = lambda do |_env|
-  [429, { "content-type" => "text/plain" }, ["Too many requests. Please try again later."]]
+  [ 429, { "content-type" => "text/plain" }, [ "Too many requests. Please try again later." ] ]
 end
