@@ -26,4 +26,18 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     get friends_user_url(@user)
     assert_response :success
   end
+
+  test "index page=2 returns success" do
+    sign_in @user
+
+    get users_url, params: { page: 2 }
+    assert_response :success
+  end
+
+  test "show page=2 returns success" do
+    sign_in @user
+
+    get user_url(@other_user), params: { page: 2 }
+    assert_response :success
+  end
 end

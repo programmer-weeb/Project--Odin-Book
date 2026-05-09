@@ -18,6 +18,7 @@
         </article>
       <% end %>
     </div>
+    <%= raw pagy_nav(@pagy) %>
   <% else %>
     <%= render "shared/empty_state", title: "No friends yet", body: "Accepted requests will appear here once connections form." %>
   <% end %>

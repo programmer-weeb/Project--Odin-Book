@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include Pagy::Frontend
+
   def google_oauth_enabled?
     google_client_id.present? && google_client_secret.present?
   end
