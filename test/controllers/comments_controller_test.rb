@@ -26,4 +26,17 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to post_url(@comment.post)
   end
+
+  test "non-owner non-post-owner cannot destroy comment" do
+    # comments(:one): owned by users(:two) on posts(:one) owned by users(:one)
+    # users(:three) is neither the comment owner nor the post owner
+    sign_in users(:three)
+
+    assert_no_difference("Comment.count") do
+      delete comment_url(comments(:one))
+    end
+
+    assert_redirected_to post_url(comments(:one).post)
+    assert_equal "Not authorized.", flash[:alert]
+  end
 end

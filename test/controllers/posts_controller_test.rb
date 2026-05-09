@@ -4,6 +4,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:one)
     @post = posts(:one)
+    @other_post = posts(:two)
   end
 
   test "redirects index when not signed in" do
@@ -66,5 +67,35 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to posts_url
+  end
+
+  test "non-owner cannot edit another user's post" do
+    sign_in @user
+
+    get edit_post_url(@other_post)
+
+    assert_redirected_to post_url(@other_post)
+    assert_equal "Not authorized.", flash[:alert]
+  end
+
+  test "non-owner cannot update another user's post" do
+    sign_in @user
+
+    patch post_url(@other_post), params: { post: { content: "Hijacked" } }
+
+    assert_redirected_to post_url(@other_post)
+    assert_equal "Not authorized.", flash[:alert]
+    assert_not_equal "Hijacked", @other_post.reload.content
+  end
+
+  test "non-owner cannot destroy another user's post" do
+    sign_in @user
+
+    assert_no_difference("Post.count") do
+      delete post_url(@other_post)
+    end
+
+    assert_redirected_to post_url(@other_post)
+    assert_equal "Not authorized.", flash[:alert]
   end
 end
