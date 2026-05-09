@@ -5,7 +5,7 @@ class PostsController < ApplicationController
 
   def index
     @post = current_user.posts.build
-    @posts = Post.includes(:user, :comments, :likes).order(created_at: :desc)
+    @posts = Post.includes(:likes, user: :profile, comments: :user).order(created_at: :desc)
     @likes_by_post_id = current_user.likes.where(post_id: @posts.map(&:id)).index_by(&:post_id)
   end
 
@@ -25,7 +25,7 @@ class PostsController < ApplicationController
     if @post.save
       redirect_to post_path(@post), notice: "Post created."
     else
-      @posts = Post.includes(:user, :comments, :likes).order(created_at: :desc)
+      @posts = Post.includes(:likes, user: :profile, comments: :user).order(created_at: :desc)
       @likes_by_post_id = current_user.likes.where(post_id: @posts.map(&:id)).index_by(&:post_id)
       render :index, status: :unprocessable_entity
     end
@@ -50,7 +50,7 @@ class PostsController < ApplicationController
   private
 
   def set_post
-    @post = Post.find(params[:id])
+    @post = Post.includes(user: :profile).find(params[:id])
   end
 
   def authorize_post_owner!
