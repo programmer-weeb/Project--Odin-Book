@@ -17,6 +17,7 @@ module ProjectOdinBook
     config.autoload_lib(ignore: %w[assets tasks])
 
     config.middleware.use Rack::Attack
+    config.active_storage.variant_processor = :mini_magick
 
     # Configuration for the application, engines, and railties goes here.
     #
