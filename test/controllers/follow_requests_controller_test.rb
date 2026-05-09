@@ -66,4 +66,39 @@ class FollowRequestsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to user_url(@requested_user)
   end
+
+  test "non-participant cannot destroy another user's follow request" do
+    # follow_requests(:two): requesting_user one, requested_user three
+    # users(:two) is not a participant
+    sign_in users(:two)
+
+    assert_no_difference("UserFollowRequest.count") do
+      delete follow_request_url(@received_request)
+    end
+
+    assert_redirected_to follow_requests_url
+    assert_equal "Not authorized.", flash[:alert]
+  end
+
+  test "requesting user cannot accept their own sent request" do
+    # follow_requests(:two): requesting_user one, requested_user three
+    # only requested_user (three) may accept
+    sign_in @user
+
+    patch accept_follow_request_url(@received_request)
+
+    assert_redirected_to follow_requests_url
+    assert_equal "Not authorized.", flash[:alert]
+    assert_equal "pending", @received_request.reload.follow_request_status
+  end
+
+  test "requesting user cannot reject their own sent request" do
+    sign_in @user
+
+    patch reject_follow_request_url(@received_request)
+
+    assert_redirected_to follow_requests_url
+    assert_equal "Not authorized.", flash[:alert]
+    assert_equal "pending", @received_request.reload.follow_request_status
+  end
 end

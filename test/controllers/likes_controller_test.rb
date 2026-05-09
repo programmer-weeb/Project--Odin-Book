@@ -26,4 +26,16 @@ class LikesControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to post_url(@like.post)
   end
+
+  test "non-owner cannot destroy another user's like" do
+    # likes(:one): owned by users(:two)
+    sign_in @user
+
+    assert_no_difference("Like.count") do
+      delete like_url(likes(:one))
+    end
+
+    assert_redirected_to post_url(likes(:one).post)
+    assert_equal "Not authorized.", flash[:alert]
+  end
 end
