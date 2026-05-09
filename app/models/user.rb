@@ -28,10 +28,10 @@ class User < ApplicationRecord
   end
 
   def friendship_status(user)
-    request = UserFollowRequest.where(requesting_user: self, requested_user: user)
-                               .or(UserFollowRequest.where(requesting_user: user, requested_user: self))
-                               .first
-    request&.follow_request_status || "none"
+    UserFollowRequest
+      .where(requesting_user: self, requested_user: user)
+      .or(UserFollowRequest.where(requesting_user: user, requested_user: self))
+      .pick(:follow_request_status) || "none"
   end
 
   after_commit :create_default_profile, on: :create
