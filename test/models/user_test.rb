@@ -58,4 +58,74 @@ class UserTest < ActiveSupport::TestCase
 
     assert_equal "Google account must provide verified email", error.message
   end
+
+  # Friendship helpers
+
+  test "friends returns accepted users in sent direction" do
+    # fixture one->two: accepted
+    assert_includes users(:one).friends, users(:two)
+  end
+
+  test "friends returns accepted users in received direction" do
+    assert_includes users(:two).friends, users(:one)
+  end
+
+  test "friends excludes pending relationships" do
+    # fixture one->three: pending
+    assert_not_includes users(:one).friends, users(:three)
+  end
+
+  test "friend? returns true for accepted relationship" do
+    assert users(:one).friend?(users(:two))
+  end
+
+  test "friend? returns true in reverse direction" do
+    assert users(:two).friend?(users(:one))
+  end
+
+  test "friend? returns false for pending relationship" do
+    assert_not users(:one).friend?(users(:three))
+  end
+
+  test "friend? returns false when no relationship exists" do
+    assert_not users(:two).friend?(users(:three))
+  end
+
+  test "friendship_status returns accepted" do
+    assert_equal "accepted", users(:one).friendship_status(users(:two))
+  end
+
+  test "friendship_status returns accepted in reverse direction" do
+    assert_equal "accepted", users(:two).friendship_status(users(:one))
+  end
+
+  test "friendship_status returns pending" do
+    assert_equal "pending", users(:one).friendship_status(users(:three))
+  end
+
+  test "friendship_status returns pending in reverse direction" do
+    assert_equal "pending", users(:three).friendship_status(users(:one))
+  end
+
+  test "friendship_status returns none when no relationship exists" do
+    assert_equal "none", users(:two).friendship_status(users(:three))
+  end
+
+  test "friendship_status returns rejected" do
+    UserFollowRequest.create!(
+      requesting_user: users(:two),
+      requested_user: users(:three),
+      follow_request_status: :rejected
+    )
+    assert_equal "rejected", users(:two).friendship_status(users(:three))
+  end
+
+  test "friendship_status returns rejected in reverse direction" do
+    UserFollowRequest.create!(
+      requesting_user: users(:two),
+      requested_user: users(:three),
+      follow_request_status: :rejected
+    )
+    assert_equal "rejected", users(:three).friendship_status(users(:two))
+  end
 end
