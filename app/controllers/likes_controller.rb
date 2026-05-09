@@ -33,5 +33,4 @@ class LikesController < ApplicationController
   def set_like
     @like = Like.find(params[:id])
   end
-
 end
