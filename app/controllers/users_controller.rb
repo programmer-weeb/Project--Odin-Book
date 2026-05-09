@@ -11,7 +11,7 @@ class UsersController < ApplicationController
 
   def show
     @profile = @user.profile
-    @posts = @user.posts.includes(:likes, comments: :user).order(created_at: :desc)
+    @posts = @user.posts.order(created_at: :desc)
     @likes_by_post_id = current_user.likes.where(post_id: @posts.map(&:id)).index_by(&:post_id)
     @friendship_status = current_user.friendship_status(@user)
     @pending_sent_request = current_user.sent_follow_requests.pending.find_by(requested_user: @user)
