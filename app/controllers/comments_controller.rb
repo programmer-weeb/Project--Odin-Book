@@ -1,4 +1,6 @@
 class CommentsController < ApplicationController
+  include AuthorizeOwner
+
   before_action :authenticate_user!
   before_action :set_post, only: :create
   before_action :set_comment, only: :destroy
@@ -17,6 +19,7 @@ class CommentsController < ApplicationController
   def destroy
     post = @comment.post
 
+    # Post owner can also delete comments on their post.
     unless @comment.user == current_user || post.user == current_user
       redirect_to post_path(post), alert: "Not authorized."
       return
