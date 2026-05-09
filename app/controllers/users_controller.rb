@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user, only: [:show, :friends]
+  before_action :set_user, only: [ :show, :friends ]
 
   def index
     @pagy, @users = pagy(User.includes(:profile).order(:email))
@@ -27,5 +27,4 @@ class UsersController < ApplicationController
   def set_user
     @user = User.includes(:profile).find(params[:id])
   end
-
 end
