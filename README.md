@@ -24,6 +24,7 @@ Odin Book is a small social network built with Ruby on Rails. Users can sign up,
 - Importmap
 - Propshaft
 - Solid Cache, Solid Queue, Solid Cable
+- Active Storage variants via image_processing (mini_magick backend)
 
 ## Data Model
 
@@ -126,6 +127,7 @@ Suggested Render settings:
 
 - Build command: `bundle install && bundle exec rails assets:precompile`
 - Start command: `./bin/rails server -b 0.0.0.0 -p $PORT`
+- Ensure the build environment has ImageMagick installed (Render's default Ruby builder includes it). The app uses mini_magick for Active Storage variants. If migrating to a base image without ImageMagick, install it via apt or switch the variant_processor to :vips.
 
 If you keep Google OAuth enabled, add this callback URL in Google Cloud:
 
