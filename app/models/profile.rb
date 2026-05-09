@@ -5,7 +5,8 @@ class Profile < ApplicationRecord
   belongs_to :user
   has_one_attached :photo
 
-  validates :display_name, presence: true
+  validates :display_name, presence: true, length: { maximum: 50 }
+  validates :bio, length: { maximum: 1000 }, allow_blank: true
   validate :photo_must_be_valid
 
   private
