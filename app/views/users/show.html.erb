@@ -2,7 +2,7 @@
   <aside class="space-y-4">
     <div class="<%= [card_classes, 'p-6'].join(' ') %>">
       <% if @profile&.photo&.attached? %>
-        <%= image_tag @profile.photo, alt: "#{display_name(@user)} profile photo", class: "h-40 w-full rounded-lg object-cover" %>
+        <%= image_tag @profile.photo.variant(resize_to_limit: [320, 320]), alt: "#{display_name(@user)} profile photo", class: "h-40 w-full rounded-lg object-cover" %>
       <% else %>
         <div class="h-40 w-full rounded-lg bg-[#ece9df]"></div>
       <% end %>

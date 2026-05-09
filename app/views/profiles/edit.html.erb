@@ -10,7 +10,7 @@
       <% if @profile.photo.attached? %>
         <div>
           <p class="text-sm font-medium text-[#3d3d3a]">Current photo</p>
-          <%= image_tag @profile.photo, alt: "#{@profile.display_name} profile photo", class: "mt-2 h-32 w-32 rounded-lg object-cover" %>
+          <%= image_tag @profile.photo.variant(resize_to_limit: [128, 128]), alt: "#{@profile.display_name} profile photo", class: "mt-2 h-32 w-32 rounded-lg object-cover" %>
         </div>
       <% end %>
 
