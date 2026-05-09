@@ -108,6 +108,31 @@ Run full test suite:
 bin/rails test
 ```
 
+## Render Deploy
+
+Simplest production setup for this app:
+
+1. Push the repo to GitHub.
+2. Create a Render Web Service from the repo.
+3. Create a Render PostgreSQL database and connect it to the service as `DATABASE_URL`.
+4. Add these environment variables in Render:
+   - `RAILS_MASTER_KEY`
+   - `SECRET_KEY_BASE`
+   - `APP_HOST` set to your Render hostname, for example `your-app.onrender.com`
+   - `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` only if you want Google sign-in enabled
+5. Attach a persistent disk mounted at `/rails/storage` so uploaded profile photos survive deploys.
+
+Suggested Render settings:
+
+- Build command: `bundle install && bundle exec rails assets:precompile`
+- Start command: `./bin/rails server -b 0.0.0.0 -p $PORT`
+
+If you keep Google OAuth enabled, add this callback URL in Google Cloud:
+
+```text
+https://your-app.onrender.com/users/auth/google_oauth2/callback
+```
+
 ## Notes
 
 - Development database name: `project_odin_book_development`
