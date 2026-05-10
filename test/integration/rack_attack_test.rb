@@ -63,6 +63,23 @@ class RackAttackTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "throttles follow request accept/reject after 20 in 60s" do
+    sign_in users(:three)
+    request_id = user_follow_requests(:two).id  # one -> three, pending
+
+    travel_to Time.zone.now.beginning_of_minute + 30.seconds do
+      20.times do
+        patch accept_follow_request_path(request_id),
+          headers: { "REMOTE_ADDR" => "1.2.3.4" }
+        assert_not_equal 429, response.status
+      end
+
+      patch accept_follow_request_path(request_id),
+        headers: { "REMOTE_ADDR" => "1.2.3.4" }
+      assert_response 429
+    end
+  end
+
   test "throttles follow request creation after 10 in 60s" do
     sign_in users(:one)
 
