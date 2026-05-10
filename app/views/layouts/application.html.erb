@@ -35,7 +35,13 @@
             <%= link_to "Feed", posts_path, class: subtle_button_classes %>
             <%= link_to "People", users_path, class: subtle_button_classes %>
             <%= link_to "Search", search_path, class: subtle_button_classes %>
-            <%= link_to "Requests", follow_requests_path, class: subtle_button_classes %>
+            <% pending_count = current_user.received_follow_requests.pending.count %>
+            <%= link_to follow_requests_path, class: subtle_button_classes do %>
+              Requests
+              <% if pending_count.positive? %>
+                <span class="ml-1.5 inline-flex items-center justify-center rounded-full bg-[#c96442] px-2 py-0.5 text-xs font-medium text-[#faf9f5]"><%= pending_count %></span>
+              <% end %>
+            <% end %>
             <%= link_to "Profile", user_path(current_user), class: subtle_button_classes %>
             <%= link_to "Edit profile", edit_profile_path, class: subtle_button_classes %>
             <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: primary_button_classes %>
