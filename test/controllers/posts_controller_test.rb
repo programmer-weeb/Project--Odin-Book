@@ -114,4 +114,14 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_match(/class="pagy nav"/, response.body)
   end
+
+  test "scope=friends limits feed to current user and friends posts" do
+    sign_in @user
+    get posts_url, params: { scope: "friends" }
+    assert_response :success
+    response_body = response.body
+    assert_match posts(:one).content, response_body
+    assert_match posts(:two).content, response_body
+    assert_no_match posts(:three).content, response_body
+  end
 end
