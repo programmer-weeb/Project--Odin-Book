@@ -80,4 +80,10 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
 
     assert_match 'turbo-stream action="remove" target="no_comments_message"', response.body
   end
+
+  test "delete form starts hidden in rendered comments" do
+    sign_in @user
+    get post_url(@post)
+    assert_match %r{<form[^>]*class="[^"]*comment-delete-form[^"]*hidden}, response.body
+  end
 end
