@@ -22,7 +22,7 @@ Odin Book is a small social network built with Ruby on Rails. Users can sign up,
 - Real-time like count updates via ActionCable / Turbo Streams
 - Global search at `/search` — matches display name and handle prefix (not full email, to prevent enumeration); excludes current user
 - Friends-only feed: `?scope=friends` filters the post feed to current user + accepted friends
-- Pending follow-request count badge in navbar (updated on page load)
+- Pending follow-request count badge in navbar — live-updated across the recipient's tabs via ActionCable when senders create, cancel, or recipients accept/reject
 - Comment Delete button restored after ActionCable broadcast via `comment-visibility` Stimulus controller
 
 ## Stack
