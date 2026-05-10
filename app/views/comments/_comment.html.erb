@@ -1,14 +1,16 @@
-<article id="<%= dom_id(comment) %>" class="rounded-lg border border-[#ece9df] bg-white px-4 py-4">
+<article id="<%= dom_id(comment) %>"
+         class="rounded-lg border border-[#ece9df] bg-white px-4 py-4"
+         data-comment-user-id="<%= comment.user_id %>"
+         data-post-user-id="<%= post.user_id %>">
   <div class="flex items-start justify-between gap-4">
     <div>
       <p class="font-medium text-[#141413]"><%= display_name(comment.user) %></p>
       <p class="mt-1 text-sm text-[#87867f]"><%= friendly_timestamp(comment.created_at) %></p>
     </div>
 
-    <% viewer = local_assigns.fetch(:viewer, nil) %>
-    <% if viewer && (comment.user == viewer || post.user == viewer) %>
-      <%= button_to "Delete", comment_path(comment), method: :delete, class: secondary_button_classes, form: { data: { turbo_confirm: "Delete this comment?" } } %>
-    <% end %>
+    <%= button_to "Delete", comment_path(comment), method: :delete,
+          class: "#{secondary_button_classes} hidden",
+          form: { data: { turbo_confirm: "Delete this comment?" }, class: "comment-delete-form" } %>
   </div>
 
   <p class="mt-3 whitespace-pre-wrap text-[15px] leading-7 text-[#3d3d3a]"><%= comment.content %></p>
