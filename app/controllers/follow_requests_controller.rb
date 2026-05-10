@@ -1,6 +1,6 @@
 class FollowRequestsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_follow_request, only: [:destroy, :accept, :reject]
+  before_action :set_follow_request, only: [ :destroy, :accept, :reject ]
   before_action :set_requested_user, only: :create
 
   def index
@@ -73,7 +73,6 @@ class FollowRequestsController < ApplicationController
   end
 
   def follow_request_participant?(follow_request)
-    [follow_request.requesting_user_id, follow_request.requested_user_id].include?(current_user.id)
+    [ follow_request.requesting_user_id, follow_request.requested_user_id ].include?(current_user.id)
   end
-
 end

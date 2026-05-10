@@ -13,4 +13,3 @@ class UserFollowRequest < ApplicationRecord
     errors.add(:requested_user_id, "cannot follow yourself") if requesting_user_id == requested_user_id
   end
 end
-
