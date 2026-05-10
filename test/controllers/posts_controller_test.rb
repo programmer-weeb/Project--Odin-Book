@@ -105,4 +105,13 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     get posts_url, params: { page: 2 }
     assert_response :success
   end
+
+  test "index page 1 shows pagy navigation when many posts exist" do
+    sign_in @user
+    21.times { |i| Post.create!(content: "Feed post #{i}", user: @user) }
+
+    get posts_url
+    assert_response :success
+    assert_match(/class="pagy nav"/, response.body)
+  end
 end
