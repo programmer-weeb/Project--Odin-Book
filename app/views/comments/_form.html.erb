@@ -1,0 +1,8 @@
+<%= form_with model: [post, comment], id: "new_comment_form", class: "space-y-4" do |form| %>
+  <%= render "shared/errors", object: comment %>
+  <div>
+    <%= form.label :content, "Add comment", class: "text-sm font-medium text-[#3d3d3a]" %>
+    <%= form.text_area :content, rows: 4, class: textarea_classes, placeholder: "Respond with context, agreement, or a useful question." %>
+  </div>
+  <%= form.submit "Post comment", class: primary_button_classes %>
+<% end %>

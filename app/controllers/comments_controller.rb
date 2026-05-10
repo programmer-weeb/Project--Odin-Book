@@ -10,23 +10,28 @@ class CommentsController < ApplicationController
     @comment.user = current_user
 
     if @comment.save
-      redirect_to post_path(@post), notice: "Comment created."
+      respond_to do |format|
+        format.html { redirect_to post_path(@post), notice: "Comment created." }
+        format.turbo_stream
+      end
     else
       redirect_to post_path(@post), alert: @comment.errors.full_messages.to_sentence
     end
   end
 
   def destroy
-    post = @comment.post
+    @post = @comment.post
 
-    # Post owner can also delete comments on their post.
-    unless @comment.user == current_user || post.user == current_user
-      redirect_to post_path(post), alert: "Not authorized."
+    unless @comment.user == current_user || @post.user == current_user
+      redirect_to post_path(@post), alert: "Not authorized."
       return
     end
 
     @comment.destroy
-    redirect_to post_path(post), notice: "Comment deleted."
+    respond_to do |format|
+      format.html { redirect_to post_path(@post), notice: "Comment deleted." }
+      format.turbo_stream
+    end
   end
 
   private
