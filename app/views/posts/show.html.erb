@@ -15,14 +15,17 @@
         <%= render "comments/form", post: @post, comment: @comment %>
       </div>
 
-      <div id="comments" class="mt-8 space-y-4">
-        <% if @comments.any? %>
-          <%= render partial: "comments/comment", collection: @comments, locals: { post: @post } %>
-          <%= raw pagy_nav(@pagy_comments) %>
-        <% else %>
+      <% if @comments.empty? %>
+        <div id="no_comments_message">
           <%= render "shared/empty_state", title: "No comments yet", body: "Be first reply and set tone for thread." %>
-        <% end %>
+        </div>
+      <% end %>
+      <div id="comments" class="mt-8 space-y-4">
+        <%= render partial: "comments/comment", collection: @comments, locals: { post: @post } %>
       </div>
+      <% if @comments.any? %>
+        <%= raw pagy_nav(@pagy_comments) %>
+      <% end %>
     </div>
   </section>
 

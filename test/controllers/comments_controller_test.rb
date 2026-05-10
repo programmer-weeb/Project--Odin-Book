@@ -64,4 +64,15 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_match "text/vnd.turbo-stream.html", response.content_type
   end
+
+  test "create from zero comments removes empty_state via turbo_stream" do
+    @post.comments.destroy_all
+    sign_in @user
+
+    post post_comments_url(@post),
+      params: { comment: { content: "First!" } },
+      headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+    assert_match 'turbo-stream action="remove" target="no_comments_message"', response.body
+  end
 end
