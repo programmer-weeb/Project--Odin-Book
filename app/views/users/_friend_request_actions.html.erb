@@ -1,0 +1,9 @@
+<%= turbo_frame_tag dom_id(user, :friend_request) do %>
+  <% if friendship_status == "none" %>
+    <%= button_to "Send request", user_follow_requests_path(user), method: :post, class: primary_button_classes %>
+  <% elsif pending_sent_request %>
+    <%= button_to "Cancel request", follow_request_path(pending_sent_request), method: :delete, class: secondary_button_classes %>
+  <% elsif pending_received_request %>
+    <%= link_to "Review request", received_follow_requests_path, class: primary_button_classes %>
+  <% end %>
+<% end %>
