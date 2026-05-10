@@ -16,6 +16,11 @@
   </section>
 
   <section class="space-y-5">
+    <div class="flex gap-2">
+      <%= link_to "All", posts_path, class: (params[:scope] == "friends" ? secondary_button_classes : primary_button_classes) %>
+      <%= link_to "Friends only", posts_path(scope: "friends"), class: (params[:scope] == "friends" ? primary_button_classes : secondary_button_classes) %>
+    </div>
+
     <% if @posts.any? %>
       <% @posts.each do |post| %>
         <%= turbo_stream_from post, :likes %>

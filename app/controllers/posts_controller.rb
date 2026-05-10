@@ -7,7 +7,13 @@ class PostsController < ApplicationController
 
   def index
     @post = current_user.posts.build
-    @pagy, @posts = pagy(Post.includes(user: :profile).order(created_at: :desc))
+    base = Post.includes(user: :profile).order(created_at: :desc)
+    if params[:scope] == "friends"
+      friend_user_ids = current_user.friends.ids + [ current_user.id ]
+      @pagy, @posts = pagy(base.where(user_id: friend_user_ids))
+    else
+      @pagy, @posts = pagy(base)
+    end
     @likes_by_post_id = current_user.likes.where(post_id: @posts.map(&:id)).index_by(&:post_id)
   end
 
