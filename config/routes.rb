@@ -30,6 +30,7 @@ Rails.application.routes.draw do
 
   # Current User's Profile
   resource :profile, only: [ :edit, :update ]
+  delete "profile/photo", to: "profiles#destroy_photo", as: :destroy_photo_profile
 
   get "up" => "rails/health#show", as: :rails_health_check
 end
