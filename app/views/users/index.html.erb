@@ -14,7 +14,7 @@
         <%= render "user_card", user: user, friend_ids: @friend_ids, sent_request_user_ids: @sent_request_user_ids, received_request_user_ids: @received_request_user_ids %>
       <% end %>
     </div>
-    <div class="mt-6"><%= raw pagy_nav(@pagy) %></div>
+    <%= raw pagy_nav(@pagy) %>
   <% else %>
     <%= render "shared/empty_state", title: "No people yet", body: "User directory will appear here once accounts exist." %>
   <% end %>

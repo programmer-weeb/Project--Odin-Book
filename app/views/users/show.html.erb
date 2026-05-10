@@ -50,7 +50,7 @@
       <% @posts.each do |post| %>
         <%= render "posts/post_card", post: post, likes_by_post_id: @likes_by_post_id %>
       <% end %>
-      <div class="mt-6"><%= raw pagy_nav(@pagy_posts) %></div>
+      <%= raw pagy_nav(@pagy_posts) %>
     <% else %>
       <%= render "shared/empty_state", title: "No posts yet", body: "This profile has not published anything yet." %>
     <% end %>
