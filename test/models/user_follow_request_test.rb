@@ -23,4 +23,20 @@ class UserFollowRequestTest < ActiveSupport::TestCase
     request = UserFollowRequest.new(requesting_user: users(:two), requested_user: users(:three))
     assert request.valid?
   end
+
+  test "broadcasts pending count to recipient on create" do
+    sender = users(:two)
+    recipient = users(:three)
+    assert_turbo_stream_broadcasts [ recipient, :pending_requests ], count: 1 do
+      UserFollowRequest.create!(requesting_user: sender, requested_user: recipient)
+    end
+  end
+
+  test "broadcasts to recipient on accept" do
+    fr = user_follow_requests(:two)
+    recipient = fr.requested_user
+    assert_turbo_stream_broadcasts [ recipient, :pending_requests ], count: 1 do
+      fr.update!(follow_request_status: :accepted)
+    end
+  end
 end
