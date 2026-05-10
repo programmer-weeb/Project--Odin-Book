@@ -14,6 +14,9 @@ Odin Book is a small social network built with Ruby on Rails. Users can sign up,
 - Send, accept, reject, and remove follow requests
 - View all users, individual profiles, and each user's friends list
 - Counter caches for post likes and comments
+- Rate limiting on auth and content-creation endpoints (Rack::Attack)
+- Pagination on feed, profile posts, user directory, friends list (pagy)
+- Profile photo upload with size/type validation and one-click removal
 
 ## Stack
 
@@ -25,6 +28,8 @@ Odin Book is a small social network built with Ruby on Rails. Users can sign up,
 - Propshaft
 - Solid Cache, Solid Queue, Solid Cable
 - Active Storage variants via image_processing (mini_magick backend)
+- Rack::Attack rate limiting
+- Pagy pagination
 
 ## Data Model
 
@@ -73,6 +78,7 @@ Main routes:
 - Ruby compatible with Rails 8
 - Bundler
 - PostgreSQL running locally
+- ImageMagick (for Active Storage image variants via mini_magick)
 
 ### Install
 
