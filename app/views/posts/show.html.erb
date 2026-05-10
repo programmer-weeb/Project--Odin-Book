@@ -8,7 +8,9 @@
           <p class="text-sm uppercase tracking-[0.08em] text-[#87867f]">Discussion</p>
           <h2 class="mt-2 text-3xl leading-tight text-[#141413]">Comments</h2>
         </div>
-        <p class="text-sm text-[#87867f]"><%= pluralize(@comments.size, "reply") %></p>
+        <p class="text-sm text-[#87867f]">
+          <span id="<%= dom_id(@post, :reply_count) %>"><%= pluralize(@post.comments_count, "reply") %></span>
+        </p>
       </div>
 
       <div class="mt-6">

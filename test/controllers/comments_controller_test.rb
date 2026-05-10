@@ -51,6 +51,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_match "text/vnd.turbo-stream.html", response.content_type
+    assert_match "turbo-stream action=\"update\" target=\"reply_count_post_#{@post.id}\"", response.body
   end
 
   test "should destroy comment via turbo_stream" do
@@ -63,6 +64,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_match "text/vnd.turbo-stream.html", response.content_type
+    assert_match "turbo-stream action=\"update\" target=\"reply_count_post_#{@post.id}\"", response.body
   end
 
   test "create from zero comments removes empty_state via turbo_stream" do
