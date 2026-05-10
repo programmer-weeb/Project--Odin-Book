@@ -139,8 +139,8 @@ pending_pairs = {}
 rejected_pairs = {}
 
 users.combination(2).to_a.sample(55).each_with_index do |(user_a, user_b), index|
-  requester, requested = index.even? ? [user_a, user_b] : [user_b, user_a]
-  key = [requester.id, requested.id]
+  requester, requested = index.even? ? [ user_a, user_b ] : [ user_b, user_a ]
+  key = [ requester.id, requested.id ]
 
   next if accepted_pairs[key] || pending_pairs[key] || rejected_pairs[key]
 
@@ -154,9 +154,9 @@ users.combination(2).to_a.sample(55).each_with_index do |(user_a, user_b), index
 end
 
 users.combination(2).to_a.sample(18).each_with_index do |(user_a, user_b), index|
-  requester, requested = index.even? ? [user_a, user_b] : [user_b, user_a]
-  key = [requester.id, requested.id]
-  reverse_key = [requested.id, requester.id]
+  requester, requested = index.even? ? [ user_a, user_b ] : [ user_b, user_a ]
+  key = [ requester.id, requested.id ]
+  reverse_key = [ requested.id, requester.id ]
 
   next if accepted_pairs[key] || accepted_pairs[reverse_key] || pending_pairs[key] || rejected_pairs[key]
 
@@ -170,9 +170,9 @@ users.combination(2).to_a.sample(18).each_with_index do |(user_a, user_b), index
 end
 
 users.combination(2).to_a.sample(14).each_with_index do |(user_a, user_b), index|
-  requester, requested = index.even? ? [user_a, user_b] : [user_b, user_a]
-  key = [requester.id, requested.id]
-  reverse_key = [requested.id, requester.id]
+  requester, requested = index.even? ? [ user_a, user_b ] : [ user_b, user_a ]
+  key = [ requester.id, requested.id ]
+  reverse_key = [ requested.id, requester.id ]
 
   next if accepted_pairs[key] || accepted_pairs[reverse_key] || pending_pairs[key] || pending_pairs[reverse_key] || rejected_pairs[key]
 
