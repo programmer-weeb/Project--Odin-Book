@@ -17,6 +17,11 @@ Odin Book is a small social network built with Ruby on Rails. Users can sign up,
 - Rate limiting on auth and content-creation endpoints (Rack::Attack)
 - Pagination on feed, profile posts, user directory, friends list (pagy)
 - Profile photo upload with size/type validation and one-click removal
+- Live photo preview via Stimulus before upload
+- Real-time comment updates via ActionCable / Turbo Streams (all viewers see new/deleted comments instantly)
+- Real-time like count updates via ActionCable / Turbo Streams
+- Global search at `/search` — finds users by name and posts by content
+- Friends-only feed: `?scope=friends` filters the post feed to current user + accepted friends
 
 ## Stack
 
