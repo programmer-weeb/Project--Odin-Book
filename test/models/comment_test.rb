@@ -22,4 +22,19 @@ class CommentTest < ActiveSupport::TestCase
     Comment.create!(user: users(:one), post: post, content: "Counter test")
     assert_equal before + 1, post.reload.comments_count
   end
+
+  test "broadcasts prepend on create" do
+    post = posts(:three)
+    assert_turbo_stream_broadcasts [ post, :comments ], count: 1 do
+      Comment.create!(user: users(:one), post: post, content: "Broadcast test")
+    end
+  end
+
+  test "broadcasts remove on destroy" do
+    comment = comments(:one)
+    post = comment.post
+    assert_turbo_stream_broadcasts [ post, :comments ], count: 1 do
+      comment.destroy!
+    end
+  end
 end
