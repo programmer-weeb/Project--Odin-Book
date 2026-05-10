@@ -15,7 +15,7 @@ class FollowRequestsController < ApplicationController
     end
 
     @follow_request.destroy
-    redirect_to follow_requests_path, notice: "Follow request removed."
+    redirect_back_or_to follow_requests_path, notice: "Follow request removed."
   end
 
   def accept

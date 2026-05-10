@@ -58,4 +58,12 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_match(/class="pagy nav"/, response.body)
   end
+
+  test "show includes friend request turbo frame for other user" do
+    sign_in @user
+
+    get user_url(@other_user)
+    assert_response :success
+    assert_match(/turbo-frame[^>]*id="friend_request_user_#{@other_user.id}"/, response.body)
+  end
 end

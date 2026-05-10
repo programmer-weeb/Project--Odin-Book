@@ -22,8 +22,16 @@
     <%= link_to "View profile", user_path(user), class: primary_button_classes %>
     <%= link_to "Friends", friends_user_path(user), class: secondary_button_classes %>
 
-    <% if user != current_user && !friend_ids.include?(user.id) && !sent_request_user_ids.include?(user.id) && !received_request_user_ids.include?(user.id) %>
-      <%= button_to "Send request", user_follow_requests_path(user), method: :post, class: secondary_button_classes %>
+    <% unless user == current_user %>
+      <% fr_status = if friend_ids.include?(user.id) then "accepted"
+                     elsif sent_request_user_ids.include?(user.id) || received_request_user_ids.include?(user.id) then "pending"
+                     else "none"
+                     end %>
+      <%= render "users/friend_request_actions",
+            user: user,
+            friendship_status: fr_status,
+            pending_sent_request: nil,
+            pending_received_request: nil %>
     <% end %>
   </div>
 </article>
