@@ -33,5 +33,7 @@ Rails.application.routes.draw do
     delete :photo, action: :destroy_photo
   end
 
+  get "search", to: "search#index", as: :search
+
   get "up" => "rails/health#show", as: :rails_health_check
 end

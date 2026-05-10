@@ -26,6 +26,10 @@ Rack::Attack.throttle("follow_request_actions/ip", limit: 20, period: 60) do |re
   req.ip if req.patch? && req.path.match?(%r{\A/follow_requests/\d+/(accept|reject)\z})
 end
 
+Rack::Attack.throttle("search/ip", limit: 30, period: 1.minute) do |req|
+  req.ip if req.path == "/search" && req.get?
+end
+
 Rack::Attack.throttled_responder = lambda do |_env|
   [ 429, { "content-type" => "text/plain" }, [ "Too many requests. Please try again later." ] ]
 end
