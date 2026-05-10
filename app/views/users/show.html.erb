@@ -48,6 +48,7 @@
 
     <% if @posts.any? %>
       <% @posts.each do |post| %>
+        <%= turbo_stream_from post, :likes %>
         <%= render "posts/post_card", post: post, likes_by_post_id: @likes_by_post_id %>
       <% end %>
       <%= raw pagy_nav(@pagy_posts) %>

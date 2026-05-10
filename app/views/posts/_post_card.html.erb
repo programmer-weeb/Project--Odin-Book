@@ -25,9 +25,13 @@
   <div class="mt-6 flex flex-wrap items-center gap-3 border-t border-[#e8e6dc] pt-4">
     <%= turbo_frame_tag dom_id(post, :likes) do %>
       <% if like %>
-        <%= button_to "Unlike (#{post.likes_count})", like_path(like), method: :delete, class: secondary_button_classes %>
+        <%= button_to like_path(like), method: :delete, class: secondary_button_classes do %>
+          Unlike (<span id="<%= dom_id(post, :like_count) %>"><%= post.likes_count %></span>)
+        <% end %>
       <% else %>
-        <%= button_to "Like (#{post.likes_count})", post_likes_path(post), method: :post, class: primary_button_classes %>
+        <%= button_to post_likes_path(post), method: :post, class: primary_button_classes do %>
+          Like (<span id="<%= dom_id(post, :like_count) %>"><%= post.likes_count %></span>)
+        <% end %>
       <% end %>
     <% end %>
 
