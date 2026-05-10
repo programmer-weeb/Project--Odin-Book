@@ -33,4 +33,25 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to user_url(@user)
     assert @user.profile.reload.photo.attached?
   end
+
+  test "signed-in user can delete attached photo" do
+    sign_in @user
+
+    @user.profile.photo.attach(
+      io: File.open(Rails.root.join("public/icon.png")),
+      filename: "icon.png",
+      content_type: "image/png"
+    )
+    assert @user.profile.photo.attached?
+
+    delete destroy_photo_profile_url
+
+    assert_redirected_to edit_profile_url
+    assert_not @user.profile.reload.photo.attached?
+  end
+
+  test "unauthenticated user cannot delete photo" do
+    delete destroy_photo_profile_url
+    assert_redirected_to new_user_session_url
+  end
 end

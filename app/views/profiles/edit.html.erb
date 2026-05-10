@@ -11,6 +11,11 @@
         <div>
           <p class="text-sm font-medium text-[#3d3d3a]">Current photo</p>
           <%= image_tag @profile.photo.variant(resize_to_limit: [128, 128]), alt: "#{@profile.display_name} profile photo", class: "mt-2 h-32 w-32 rounded-lg object-cover" %>
+          <%= button_to "Remove photo",
+                destroy_photo_profile_path,
+                method: :delete,
+                class: secondary_button_classes,
+                form: { data: { turbo_confirm: "Remove this photo?" } } %>
         </div>
       <% end %>
 

@@ -15,10 +15,15 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def destroy_photo
+    @profile = current_user.profile
+    @profile.photo.purge_later if @profile.photo.attached?
+    redirect_to edit_profile_path, notice: "Photo removed."
+  end
+
   private
 
   def profile_params
     params.require(:profile).permit(:display_name, :bio, :photo)
   end
-
 end
