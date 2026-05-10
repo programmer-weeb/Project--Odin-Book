@@ -5,7 +5,11 @@ class SearchController < ApplicationController
     @query = params[:q].to_s.strip
     if @query.present?
       @users = User.joins(:profile)
-                   .where("profiles.display_name ILIKE :q OR users.email ILIKE :q", q: "%#{@query}%")
+                   .where(
+                     "profiles.display_name ILIKE :q OR split_part(users.email, '@', 1) ILIKE :q",
+                     q: "%#{@query}%"
+                   )
+                   .where.not(id: current_user.id)
                    .includes(:profile)
                    .limit(20)
       @posts = Post.where("content ILIKE ?", "%#{@query}%")
