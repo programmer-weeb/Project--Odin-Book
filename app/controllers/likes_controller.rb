@@ -9,7 +9,7 @@ class LikesController < ApplicationController
     @like = @post.likes.build(user: current_user)
 
     if @like.save
-      redirect_to post_path(@post), notice: "Post liked."
+      redirect_to post_path(@post)
     else
       redirect_to post_path(@post), alert: @like.errors.full_messages.to_sentence
     end
@@ -21,7 +21,7 @@ class LikesController < ApplicationController
 
     post = @like.post
     @like.destroy
-    redirect_to post_path(post), notice: "Like removed."
+    redirect_to post_path(post)
   end
 
   private
