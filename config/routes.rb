@@ -29,8 +29,9 @@ Rails.application.routes.draw do
   end
 
   # Current User's Profile
-  resource :profile, only: [ :edit, :update ]
-  delete "profile/photo", to: "profiles#destroy_photo", as: :destroy_photo_profile
+  resource :profile, only: [ :edit, :update ] do
+    delete :photo, action: :destroy_photo
+  end
 
   get "up" => "rails/health#show", as: :rails_health_check
 end
