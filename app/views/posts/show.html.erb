@@ -24,8 +24,11 @@
           <%= render "shared/empty_state", title: "No comments yet", body: "Be first reply and set tone for thread." %>
         </div>
       <% end %>
-      <div id="comments" class="mt-8 space-y-4">
-        <%= render partial: "comments/comment", collection: @comments, locals: { post: @post, viewer: current_user } %>
+      <div id="comments"
+           class="mt-8 space-y-4"
+           data-controller="comment-visibility"
+           data-comment-visibility-current-user-id-value="<%= current_user.id %>">
+        <%= render partial: "comments/comment", collection: @comments, locals: { post: @post } %>
       </div>
       <% if @comments.any? %>
         <%= raw pagy_nav(@pagy_comments) %>
