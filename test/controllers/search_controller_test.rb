@@ -38,4 +38,18 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     assert_match "No people matched", response.body
     assert_match "No posts matched", response.body
   end
+
+  test "does not return current user in results" do
+    sign_in @user
+    get search_url, params: { q: @user.profile.display_name }
+    assert_response :success
+    assert_match "No people matched", response.body
+  end
+
+  test "does not match against full email domain" do
+    sign_in @user
+    get search_url, params: { q: "example.com" }
+    assert_response :success
+    assert_match "No people matched", response.body
+  end
 end
