@@ -24,6 +24,7 @@
 
   <body class="<%= app_shell_classes %> font-sans antialiased">
     <% if user_signed_in? %>
+      <%= turbo_stream_from current_user, :pending_requests %>
       <header class="border-b border-[#e8e6dc] bg-[#f5f4ed]/95 backdrop-blur">
         <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
           <div>
@@ -38,9 +39,9 @@
             <% pending_count = current_user.received_follow_requests.pending.count %>
             <%= link_to follow_requests_path, class: subtle_button_classes do %>
               Requests
-              <% if pending_count.positive? %>
-                <span class="ml-1.5 inline-flex items-center justify-center rounded-full bg-[#c96442] px-2 py-0.5 text-xs font-medium text-[#faf9f5]"><%= pending_count %></span>
-              <% end %>
+              <span id="pending_request_badge">
+                <%= render "shared/pending_request_badge", count: pending_count %>
+              </span>
             <% end %>
             <%= link_to "Profile", user_path(current_user), class: subtle_button_classes %>
             <%= link_to "Edit profile", edit_profile_path, class: subtle_button_classes %>
