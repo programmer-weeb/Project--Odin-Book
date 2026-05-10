@@ -1,0 +1,42 @@
+<section class="mx-auto max-w-3xl space-y-8">
+  <div>
+    <p class="text-sm uppercase tracking-[0.08em] text-[#87867f]">Search</p>
+    <h1 class="mt-2 text-4xl leading-tight text-[#141413]">Find people and posts.</h1>
+  </div>
+
+  <%= form_with url: search_path, method: :get, class: "flex gap-3" do |f| %>
+    <%= f.text_field :q, value: @query, placeholder: "Search by name or content…",
+        class: input_classes, autofocus: true %>
+    <%= f.submit "Search", class: primary_button_classes %>
+  <% end %>
+
+  <% if @query.present? %>
+    <div>
+      <h2 class="text-2xl text-[#141413]">People</h2>
+      <% if @users.any? %>
+        <div class="mt-4 space-y-3">
+          <% @users.each do |user| %>
+            <%= render "users/user_card", user: user, friend_ids: @friend_ids,
+                  sent_request_user_ids: @sent_request_user_ids,
+                  received_request_user_ids: @received_request_user_ids %>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="mt-4 text-sm text-[#87867f]">No people matched "<%= @query %>".</p>
+      <% end %>
+    </div>
+
+    <div>
+      <h2 class="text-2xl text-[#141413]">Posts</h2>
+      <% if @posts.any? %>
+        <div class="mt-4 space-y-4">
+          <% @posts.each do |post| %>
+            <%= render "posts/post_card", post: post, likes_by_post_id: @likes_by_post_id %>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="mt-4 text-sm text-[#87867f]">No posts matched "<%= @query %>".</p>
+      <% end %>
+    </div>
+  <% end %>
+</section>
