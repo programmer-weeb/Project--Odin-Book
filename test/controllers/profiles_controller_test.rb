@@ -44,14 +44,14 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
     )
     assert @user.profile.photo.attached?
 
-    delete destroy_photo_profile_url
+    delete photo_profile_url
 
     assert_redirected_to edit_profile_url
     assert_not @user.profile.reload.photo.attached?
   end
 
   test "unauthenticated user cannot delete photo" do
-    delete destroy_photo_profile_url
+    delete photo_profile_url
     assert_redirected_to new_user_session_url
   end
 end
