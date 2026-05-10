@@ -1,2 +1,1 @@
-<%= turbo_stream.remove dom_id(@comment) %>
 <%= turbo_stream.update dom_id(@post, :reply_count), pluralize(@post.reload.comments_count, "reply") %>

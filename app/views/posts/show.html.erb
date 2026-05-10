@@ -1,3 +1,4 @@
+<%= turbo_stream_from @post, :comments %>
 <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
   <section class="space-y-6">
     <%= render "post_card", post: @post, likes_by_post_id: @likes_by_post_id %>
@@ -23,7 +24,7 @@
         </div>
       <% end %>
       <div id="comments" class="mt-8 space-y-4">
-        <%= render partial: "comments/comment", collection: @comments, locals: { post: @post } %>
+        <%= render partial: "comments/comment", collection: @comments, locals: { post: @post, viewer: current_user } %>
       </div>
       <% if @comments.any? %>
         <%= raw pagy_nav(@pagy_comments) %>

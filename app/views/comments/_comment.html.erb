@@ -5,7 +5,8 @@
       <p class="mt-1 text-sm text-[#87867f]"><%= friendly_timestamp(comment.created_at) %></p>
     </div>
 
-    <% if comment.user == current_user || post.user == current_user %>
+    <% viewer = local_assigns.fetch(:viewer, nil) %>
+    <% if viewer && (comment.user == viewer || post.user == viewer) %>
       <%= button_to "Delete", comment_path(comment), method: :delete, class: secondary_button_classes, form: { data: { turbo_confirm: "Delete this comment?" } } %>
     <% end %>
   </div>
