@@ -1,8 +1,9 @@
 # Odin Book
 
-Odin Book is a small social network built with Ruby on Rails. Users can sign up, create posts, comment, like posts, manage a profile, and send follow requests to other users.
+Odin Book is a small social network built with Ruby on Rails. Users sign up, post, comment, like posts, edit a profile, and send follow requests.
 
-[**Live Demo**](https://uropygial-overofficious-lovella.ngrok-free.dev/)
+[**Live Demo**](https://ahmed-odin-book.onrender.com/)
+Login with `alex@example.com` / `password123`.
 
 ## Features
 
@@ -18,12 +19,12 @@ Odin Book is a small social network built with Ruby on Rails. Users can sign up,
 - Pagination on feed, profile posts, user directory, friends list (pagy)
 - Profile photo upload with size/type validation and one-click removal
 - Live photo preview via Stimulus before upload
-- Real-time comment updates via ActionCable / Turbo Streams (all viewers see new/deleted comments instantly)
-- Real-time like count updates via ActionCable / Turbo Streams
-- Global search at `/search` — matches display name and handle prefix (not full email, to prevent enumeration); excludes current user
-- Friends-only feed: `?scope=friends` filters the post feed to current user + accepted friends
-- Pending follow-request count badge in navbar — live-updated across the recipient's tabs via ActionCable when senders create, cancel, or recipients accept/reject
-- Comment Delete button restored after ActionCable broadcast via `comment-visibility` Stimulus controller
+- Live comment updates via ActionCable / Turbo Streams (new and deleted comments show up for every viewer without a refresh)
+- Live like-count updates via ActionCable / Turbo Streams
+- Global search at `/search`. Matches display name and handle prefix, not full email (to avoid email enumeration), and excludes the current user
+- Friends-only feed: `?scope=friends` filters the feed to the current user and their accepted friends
+- Pending follow-request count badge in the navbar. Updates live across the recipient's tabs via ActionCable when the sender creates or cancels a request, or when the recipient accepts or rejects it
+- Comment delete button is restored after an ActionCable broadcast by the `comment-visibility` Stimulus controller
 
 ## Stack
 
@@ -62,7 +63,7 @@ Relationship summary:
 
 - Root path goes to posts feed: `/`
 - All main features require authentication
-- New accounts get a default profile whose display name starts as email prefix
+- New accounts get a default profile whose display name starts as the email prefix
 - Users can delete their own likes
 - Users can delete their own comments, and post owners can also delete comments on their posts
 - Users can edit and delete only their own posts
@@ -124,7 +125,7 @@ bin/rails test
 
 ## Render Deploy
 
-Simplest production setup for this app:
+To deploy to Render:
 
 1. Push the repo to GitHub.
 2. Create a Render Web Service from the repo.
@@ -155,4 +156,4 @@ https://your-app.onrender.com/users/auth/google_oauth2/callback
 
 ## Project Goal
 
-This project matches Odin Book assignment style: build Facebook-like social features with authentication, profiles, posting, and follow/friend relationships in Rails.
+Built for The Odin Project's Odin Book assignment: Facebook-style social features (auth, profiles, posts, friend requests) in Rails.
